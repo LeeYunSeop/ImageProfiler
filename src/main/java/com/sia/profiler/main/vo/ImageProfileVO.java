@@ -1,12 +1,13 @@
 package com.sia.profiler.main.vo;
 
+import java.util.Map;
+
 public class ImageProfileVO {
 	
 	private int id;
-	private String name;
-	private int width;
-	private int height;
-	private String shootingTime;
+	private ImageMetaInfoVO imageMetaInfo;
+	private ImageStatisticsVO imageStatistics;
+	private Map<String, Double[]> imageHistogram;
 	
 	public int getId() {
 		return id;
@@ -14,34 +15,27 @@ public class ImageProfileVO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public ImageMetaInfoVO getImageMetaInfo() {
+		return imageMetaInfo;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setImageMetaInfo(ImageMetaInfoVO imageMetaInfo) {
+		this.imageMetaInfo = imageMetaInfo;
 	}
-	public int getWidth() {
-		return width;
+	public ImageStatisticsVO getImageStatistics() {
+		return imageStatistics;
 	}
-	public void setWidth(int width) {
-		this.width = width;
+	public void setImageStatistics(ImageStatisticsVO imageStatistics) {
+		this.imageStatistics = imageStatistics;
 	}
-	public int getHeight() {
-		return height;
+	public Map<String, Double[]> getImageHistogram() {
+		return imageHistogram;
 	}
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	public String getShootingTime() {
-		return shootingTime;
-	}
-	public void setShootingTime(String shootingTime) {
-		this.shootingTime = shootingTime;
+	public void setImageHistogram(Map<String, Double[]> imageHistogram) {
+		this.imageHistogram = imageHistogram;
 	}
 	@Override
 	public String toString() {
-		return "ImageProfileVO [id=" + id + ", name=" + name + ", width=" + width + ", height=" + height
-				+ ", shootingTime=" + shootingTime + "]";
+		return "ImageProfileVO [id=" + id + ", imageMetaInfo=" + imageMetaInfo + ", imageStatistics=" + imageStatistics
+				+ ", imageHistogram=" + imageHistogram + "]";
 	}
-	
 }

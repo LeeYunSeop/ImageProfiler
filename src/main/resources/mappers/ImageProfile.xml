@@ -5,15 +5,38 @@
  
 <mapper namespace="com.sia.profiler.main.dao.ImageProfile">
 
-    <select id="findByAll" resultType="com.sia.profiler.main.vo.ImageProfileVO">
+    <select id="findByAll" resultType="ResponseVO">
         SELECT * 
         FROM TB_IMAGE_PROFILES
     </select>
  
-    <select id="findById" parameterType="int" resultType="com.sia.profiler.main.vo.ImageProfileVO">
+    <select id="findById" parameterType="int" resultType="ResponseVO">
         SELECT *
         FROM TB_IMAGE_PROFILES
         WHERE ID = #{id}
     </select>
+    
+    <insert id="insertProfile" useGeneratedKeys="true" keyProperty="id" parameterType="ImageProfileVo">
+    	INSERT INTO TB_IMAGE_PROFILES
+    		(
+    		 NAME,
+    		 WIDTH,
+    		 HEIGHT,
+    		 SHOOTING_TIME,
+    		 MIN,
+    		 MAX,
+    		 AVG
+    		)
+    	VALUES
+    		(
+    		 #{imageMetaInfo.name},
+    		 #{imageMetaInfo.width},
+    		 #{imageMetaInfo.height},
+    		 #{imageMetaInfo.shootingTime},
+    		 #{imageStatistics.min},
+    		 #{imageStatistics.max},
+    		 #{imageStatistics.avg}
+    		)
+    </insert>
     
 </mapper>
