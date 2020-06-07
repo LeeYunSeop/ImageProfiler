@@ -1,8 +1,7 @@
 package com.sia.profiler.main.actors;
 
-import static org.junit.Assert.assertTrue;
-
 import java.time.Duration;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -46,7 +45,6 @@ public class ImageProfileInsertTest {
 		final TestActorRef<ImageMetaInfoActor> imageMetaInfoActorRef = TestActorRef.create(system, imageMetaInfoActorProps, "ImageMetaInfoActor");
 		final CompletableFuture<Object> imageMetaInfoActorFuture = Patterns.ask(imageMetaInfoActorRef, "test", Duration.ofMillis(3000))
 				.toCompletableFuture();
-		assertTrue(imageMetaInfoActorFuture.isDone());
 		ImageMetaInfoVO imageMetaInfoResult = (ImageMetaInfoVO) imageMetaInfoActorFuture.get();
 		logger.info(imageMetaInfoResult.toString());
 		
@@ -57,15 +55,22 @@ public class ImageProfileInsertTest {
 		final TestActorRef<ImageStatisticsActor> imageStatisticsActorRef = TestActorRef.create(system, imageStatisticsActorProps, "ImageStatisticsActor");
 		final CompletableFuture<Object> imageStatisticsActorFuture = Patterns.ask(imageStatisticsActorRef, "test", Duration.ofMillis(3000))
 				.toCompletableFuture();
-		assertTrue(imageStatisticsActorFuture.isDone());
 		ImageStatisticsVO imageStatisticsResult = (ImageStatisticsVO) imageStatisticsActorFuture.get();
 		vo.setImageStatistics(imageStatisticsResult);
 		
 		logger.info(vo.toString());
 		
+		final Props imageHistogramActorProps = Props.create(ImageHistogramActor.class, "src/test/resources/image/image.jpg", 0);
+		final TestActorRef<ImageStatisticsActor> imageHistogramActorRef = TestActorRef.create(system, imageHistogramActorProps, "ImageHistogramActor");
+		final CompletableFuture<Object> imageHistogramActorFuture = Patterns.ask(imageHistogramActorRef, "test", Duration.ofMillis(3000))
+				.toCompletableFuture();
+		Map<String, Double[]> imageHistogramResult = (Map<String, Double[]>) imageHistogramActorFuture.get();
+		vo.setImageHistogram(imageHistogramResult);
+		
 		SqlSession session = MybatisSessionFactory.getSqlSessionFactory().openSession(true);
 		ImageProfile mapper = session.getMapper(ImageProfile.class);
 		mapper.insertProfile(vo);
 		logger.info(vo.toString());
+		mapper.insertHistogram(vo);
 	}
 }

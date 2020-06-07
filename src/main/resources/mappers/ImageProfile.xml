@@ -2,41 +2,63 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- 
+
 <mapper namespace="com.sia.profiler.main.dao.ImageProfile">
 
-    <select id="findByAll" resultType="ResponseVO">
-        SELECT * 
-        FROM TB_IMAGE_PROFILES
-    </select>
- 
-    <select id="findById" parameterType="int" resultType="ResponseVO">
-        SELECT *
-        FROM TB_IMAGE_PROFILES
-        WHERE ID = #{id}
-    </select>
-    
-    <insert id="insertProfile" useGeneratedKeys="true" keyProperty="id" parameterType="ImageProfileVo">
-    	INSERT INTO TB_IMAGE_PROFILES
-    		(
-    		 NAME,
-    		 WIDTH,
-    		 HEIGHT,
-    		 SHOOTING_TIME,
-    		 MIN,
-    		 MAX,
-    		 AVG
-    		)
-    	VALUES
-    		(
-    		 #{imageMetaInfo.name},
-    		 #{imageMetaInfo.width},
-    		 #{imageMetaInfo.height},
-    		 #{imageMetaInfo.shootingTime},
-    		 #{imageStatistics.min},
-    		 #{imageStatistics.max},
-    		 #{imageStatistics.avg}
-    		)
-    </insert>
-    
+	<select id="findByAll" resultType="ResponseVO">
+		SELECT *
+		FROM TB_IMAGE_PROFILES
+	</select>
+
+	<select id="findById" parameterType="int"
+		resultType="ResponseVO">
+		SELECT *
+		FROM TB_IMAGE_PROFILES
+		WHERE ID = #{id}
+	</select>
+
+	<insert id="insertProfile" useGeneratedKeys="true"
+		keyProperty="id" parameterType="ImageProfileVo">
+		INSERT INTO TB_IMAGE_PROFILES
+		(
+		NAME,
+		WIDTH,
+		HEIGHT,
+		SHOOTING_TIME,
+		MIN,
+		MAX,
+		AVG
+		)
+		VALUES
+		(
+		#{imageMetaInfo.name},
+		#{imageMetaInfo.width},
+		#{imageMetaInfo.height},
+		#{imageMetaInfo.shootingTime},
+		#{imageStatistics.min},
+		#{imageStatistics.max},
+		#{imageStatistics.avg}
+		)
+	</insert>
+
+	<insert id="insertHistogram" parameterType="ImageProfileVo">
+		INSERT INTO TB_IMAGE_HISTOGRAM
+		(
+		IMAGE_ID,
+		COLOR,
+		VALUE
+		)
+		VALUES
+		<foreach collection="imageHistogram" index="key" item="value"
+			separator=";">
+			<foreach collection="value" item="histogram" separator=",">
+				(
+				#{id},
+				#{key},
+				#{histogram}
+				)
+			</foreach>
+		</foreach>
+	</insert>
+
 </mapper>

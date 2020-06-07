@@ -10,5 +10,6 @@ public interface ImageProfile {
 	public List<ResponseVO> findByAll();
 	public ResponseVO findById(int id);
 	public int insertProfile(ImageProfileVO param);
+	public int insertHistogram(ImageProfileVO param);
 	
 }
